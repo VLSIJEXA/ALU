@@ -1,0 +1,85 @@
+
+module testbench;
+
+    // Inputs
+    reg [3:0] a;
+    reg [3:0] b;
+    reg [3:0] opcode;
+    reg [1:0] power_mode;
+
+    // Outputs
+    wire [3:0] x;
+    wire [3:0] y;
+
+    // Instantiate the Device Under Test (DUT)
+    newproject_3 uut (
+        .x(x), 
+        .y(y), 
+        .a(a), 
+        .b(b), 
+        .opcode(opcode), 
+        .power_mode(power_mode)
+    );
+
+    // Test stimulus
+    initial begin
+        // Test High Performance Mode (power_mode = 2'b00)
+        power_mode = 2'b00;
+        $display("Testing High Performance Mode...");
+        
+        // Test all opcodes in High Performance Mode
+        a = 4'b1100; b = 4'b1010; opcode = 4'b0000; #10; // OR reduction
+        a = 4'b1100; b = 4'b1010; opcode = 4'b0001; #10; // AND reduction
+        a = 4'b1100; b = 4'b1010; opcode = 4'b0010; #10; // XOR reduction
+        a = 4'b1100; b = 4'b1010; opcode = 4'b0011; #10; // AND operation
+        a = 4'b1100; b = 4'b1010; opcode = 4'b0100; #10; // OR operation
+        a = 4'b1100; b = 4'b1010; opcode = 4'b0101; #10; // XOR operation
+        a = 4'b1100; b = 4'b1010; opcode = 4'b0110; #10; // Greater than
+        a = 4'b1100; b = 4'b1010; opcode = 4'b0111; #10; // Less than
+        a = 4'b1100; b = 4'b1010; opcode = 4'b1000; #10; // NOT operation
+        a = 4'b1100; b = 4'b1010; opcode = 4'b1001; #10; // Equality check
+        a = 4'b1100; b = 4'b1010; opcode = 4'b1010; #10; // Addition with carry
+        a = 4'b1100; b = 4'b1010; opcode = 4'b1011; #10; // Subtraction
+        a = 4'b1100; b = 4'b1010; opcode = 4'b1100; #10; // Multiplication
+        a = 4'b1100; b = 4'b1010; opcode = 4'b1101; #10; // Right shift
+        a = 4'b1100; b = 4'b1010; opcode = 4'b1110; #10; // Left shift
+        a = 4'b1100; b = 4'b1010; opcode = 4'b1111; #10; // NOT operation on a
+        
+        // Test Low Power Mode (power_mode = 2'b01)
+        power_mode = 2'b01;
+        $display("Testing Low Power Mode...");
+        
+        // Test some opcodes in Low Power Mode
+        a = 4'b1100; b = 4'b1010; opcode = 4'b0000; #10; // OR reduction
+        a = 4'b1100; b = 4'b1010; opcode = 4'b0001; #10; // AND reduction
+        a = 4'b1100; b = 4'b1010; opcode = 4'b0010; #10; // XOR reduction
+        a = 4'b1100; b = 4'b1010; opcode = 4'b0011; #10; // AND operation
+        a = 4'b1100; b = 4'b1010; opcode = 4'b0100; #10; // OR operation
+        a = 4'b1100; b = 4'b1010; opcode = 4'b0101; #10; // XOR operation
+        a = 4'b1100; b = 4'b1010; opcode = 4'b1000; #10; // NOT operation
+        a = 4'b1100; b = 4'b1010; opcode = 4'b1010; #10; // Addition with carry
+        
+        // Test Ultra Low Power Mode (power_mode = 2'b10)
+        power_mode = 2'b10;
+        $display("Testing Ultra Low Power Mode...");
+        
+        // Test some opcodes in Ultra Low Power Mode
+        a = 4'b1100; b = 4'b1010; opcode = 4'b0000; #10; // OR reduction
+        a = 4'b1100; b = 4'b1010; opcode = 4'b0001; #10; // AND reduction
+        a = 4'b1100; b = 4'b1010; opcode = 4'b1000; #10; // NOT operation
+        a = 4'b1100; b = 4'b1010; opcode = 4'b1111; #10; // NOT operation on a
+        
+        // Test invalid opcode and power_mode combinations
+        power_mode = 2'b11;
+        a = 4'b1100; b = 4'b1010; opcode = 4'b1111; #10; // Invalid power_mode
+        
+        $finish;
+    end
+
+    // Monitor changes in signals
+    initial begin
+        $monitor("Time: %t | a: %b, b: %b, opcode: %b, power_mode: %b | x: %b, y: %b", 
+                 $time, a, b, opcode, power_mode, x, y);
+    end
+
+endmodule
