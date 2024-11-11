@@ -28,3 +28,11 @@ This kind of design could be especially useful in systems where:
 •	Power consumption is a critical concern (e.g., battery-operated devices).
 •	You need to balance performance and energy efficiency dynamically.
 •	Operations are relatively simple but need to adjust based on the power available or required.
+![image](https://github.com/user-attachments/assets/d9e0f31c-801f-423a-a5ee-4ca95496f2d7)
+![image](https://github.com/user-attachments/assets/2dbdc959-e8b8-4955-8b77-0e018cdb76a2)
+![image](https://github.com/user-attachments/assets/16e6dc89-b9d5-4b8f-8b5d-caed6dc72004)
+![image](https://github.com/user-attachments/assets/5a5ca6cd-a5f2-4213-a0c8-9c2c508a163f)
+
+
+
+
