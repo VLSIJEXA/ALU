@@ -1,0 +1,63 @@
+module newproject_3(
+
+    output reg [3:0] x, y,
+    input [3:0] a, b, opcode,
+    input [1:0] power_mode   // New control signal to simulate dynamic scaling
+);
+
+    always @(a, b, opcode, power_mode) begin
+        case (power_mode)
+            2'b00: begin // High Performance Mode
+                case (opcode)
+                    4'b0000: x[0] = |a;        // OR reduction
+                    4'b0001: x[0] = &a;        // AND reduction
+                    4'b0010: x[0] = ^a;        // XOR reduction
+                    4'b0011: x = a & b;        // AND operation
+                    4'b0100: x = a | b;        // OR operation
+                    4'b0101: x = a ^ b;        // XOR operation
+                    4'b0110: x[0] = a > b;     // Greater than
+                    4'b0111: x[0] = a < b;     // Less than
+                    4'b1000: x[0] = !a;        // NOT operation
+                    4'b1001: x[0] = (a == b);  // Equality check
+                    4'b1010: {y[0], x} = a + b; // Addition with carry
+                    4'b1011: x = a - b;        // Subtraction
+                    4'b1100: {y, x} = a * b;   // Multiplication
+                    4'b1101: {y, x} = a >> b;  // Right shift
+                    4'b1110: {y, x} = a << b;  // Left shift
+                    4'b1111: x = ~a;           // NOT operation on a
+                    default: $display("error");
+                endcase
+            end
+
+            2'b01: begin // Low Power Mode (simplified operations)
+                case (opcode)
+                    4'b0000: x[0] = |a;        // OR reduction
+                    4'b0001: x[0] = &a;        // AND reduction
+                    4'b0010: x[0] = ^a;        // XOR reduction
+                    4'b0011: x = a & b;        // AND operation
+                    4'b0100: x = a | b;        // OR operation
+                    4'b0101: x = a ^ b;        // XOR operation
+                    4'b1000: x[0] = !a;        // NOT operation
+                    4'b1010: {y[0], x} = a + b; // Addition with carry
+                    4'b1111: x = ~a;           // NOT operation on a
+                    default: $display("error");
+                endcase
+            end
+
+            2'b10: begin // Ultra Low Power Mode (fewer operations)
+                case (opcode)
+                    4'b0000: x[0] = |a;        // OR reduction
+                    4'b0001: x[0] = &a;        // AND reduction
+                    4'b1000: x[0] = !a;        // NOT operation
+                    4'b1111: x = ~a;           // NOT operation on a
+                    default: x = 4'b0000;      // Default output in ultra low power
+                endcase
+            end
+
+            default: begin
+                x = 4'b0000; // Default error state
+            end
+        endcase
+    end
+
+endmodule
